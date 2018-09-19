@@ -63,6 +63,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, weak) id<TOCropViewDelegate> delegate;
 
 /**
+ If false, the crop background uses a dark them. If true, the crop backgorund uses a light theme.
+ Default vaue is NO.
+ */
+@property (nonatomic, assign) BOOL cropBackgroundLight;
+
+/**
  If false, the user cannot resize the crop box frame using a pan gesture from a corner.
  Default vaue is YES.
  */

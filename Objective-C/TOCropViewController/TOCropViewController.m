@@ -124,6 +124,7 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
     self.toolbar.frame = [self frameForToolbarWithVerticalLayout:self.verticalLayout];
 
     // Set up toolbar default behaviour
+    self.toolbar.swapButtonHidden = self.swapButtonHidden || circularMode;
     self.toolbar.clampButtonHidden = self.aspectRatioPickerButtonHidden || circularMode;
     self.toolbar.rotateClockwiseButtonHidden = self.rotateClockwiseButtonHidden;
     
@@ -131,6 +132,7 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
     __weak typeof(self) weakSelf = self;
     self.toolbar.doneButtonTapped   = ^{ [weakSelf doneButtonTapped]; };
     self.toolbar.cancelButtonTapped = ^{ [weakSelf cancelButtonTapped]; };
+    self.toolbar.swapButtonTapped   = ^{ [weakSelf swapButtonTapped]; };
     self.toolbar.resetButtonTapped = ^{ [weakSelf resetCropViewLayout]; };
     self.toolbar.clampButtonTapped = ^{ [weakSelf showAspectRatioDialog]; };
     self.toolbar.rotateCounterclockwiseButtonTapped = ^{ [weakSelf rotateCropViewCounterclockwise]; };
@@ -170,7 +172,7 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
 
     // If an initial aspect ratio was set before presentation, set it now once the rest of
     // the setup will have been done
-    if (self.aspectRatioPreset != TOCropViewControllerAspectRatioPresetOriginal) {
+    if (self.aspectRatioPreset != TOCropViewControllerAspectRatioPresetOriginal && self.isMovingToParentViewController) {
         [self setAspectRatioPreset:self.aspectRatioPreset animated:NO];
     }
 }
@@ -1042,6 +1044,13 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
     }
 }
 
+- (void)swapButtonTapped {
+    if ([self.delegate respondsToSelector:@selector(cropViewControllerSwapButtonPressed:)]) {
+        [self.delegate cropViewControllerSwapButtonPressed:self];
+        return;
+    }
+}
+
 #pragma mark - Property Methods -
 
 - (void)setTitle:(NSString *)title
@@ -1155,6 +1164,16 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
 - (BOOL)aspectRatioPickerButtonHidden
 {
     return self.toolbar.clampButtonHidden;
+}
+
+- (void)setSwapButtonHidden:(BOOL)swapButtonHidden
+{
+    self.toolbar.swapButtonHidden = swapButtonHidden;
+}
+
+- (BOOL)swapButtonHidden
+{
+    return self.toolbar.swapButtonHidden;
 }
 
 - (void)setResetAspectRatioEnabled:(BOOL)resetAspectRatioEnabled

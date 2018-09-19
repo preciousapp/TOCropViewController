@@ -37,6 +37,8 @@
 @property (nonatomic, strong) UIButton *resetButton;
 @property (nonatomic, strong) UIButton *clampButton;
 
+@property (nonatomic, strong, readwrite) UIButton *swapTextButton;
+
 @property (nonatomic, strong) UIButton *rotateButton; // defaults to counterclockwise button for legacy compatibility
 
 @property (nonatomic, assign) BOOL reverseContentLayout; // For languages like Arabic where they natively present content flipped from English
@@ -58,6 +60,8 @@
     self.backgroundView = [[UIView alloc] initWithFrame:self.bounds];
     self.backgroundView.backgroundColor = [UIColor colorWithWhite:0.12f alpha:1.0f];
     [self addSubview:self.backgroundView];
+    
+    _rotateClockwiseButtonHidden = YES;
     
     // On iOS 9, we can use the new layout features to determine whether we're in an 'Arabic' style language mode
     if (@available(iOS 9.0, *)) {
@@ -135,6 +139,18 @@
     [_resetButton setImage:[TOCropToolbar resetImage] forState:UIControlStateNormal];
     [_resetButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_resetButton];
+    
+    _swapTextButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [_swapTextButton setTitle:NSLocalizedStringFromTableInBundle(@"Swap",
+                                                                 @"TOCropViewControllerLocalizable",
+                                                                 resourceBundle,
+                                                                 nil)
+                     forState:UIControlStateNormal];
+    [_swapTextButton.titleLabel setFont:[UIFont boldSystemFontOfSize:17.0f]];
+    _swapTextButton.titleLabel.adjustsFontSizeToFitWidth = YES;
+    _swapTextButton.titleLabel.minimumScaleFactor = 0.8;
+    [_swapTextButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:_swapTextButton];
 }
 
 - (void)layoutSubviews
@@ -148,6 +164,7 @@
     self.cancelTextButton.hidden = (verticalLayout);
     self.doneIconButton.hidden   = (!verticalLayout);
     self.doneTextButton.hidden   = (verticalLayout);
+    self.swapTextButton.hidden   = (verticalLayout || self.swapButtonHidden);
 
     CGRect frame = self.bounds;
     frame.origin.x -= self.backgroundViewOutsets.left;
@@ -196,6 +213,17 @@
         }
         self.doneTextButton.frame = frame;
         
+        // Work out the Swap button frame
+        frame.size.width = [self.swapTextButton.titleLabel.text sizeWithAttributes:@{NSFontAttributeName:self.swapTextButton.titleLabel.font}].width + 10;
+        
+        if (self.reverseContentLayout == NO) {
+            frame.origin.x = boundsSize.width - (frame.size.width + insetPadding);
+        }
+        else {
+            frame.origin.x = insetPadding;
+        }
+        self.swapTextButton.frame = frame;
+
         // Work out the frame between the two buttons where we can layout our action buttons
         CGFloat x = self.reverseContentLayout ? CGRectGetMaxX(self.doneTextButton.frame) : CGRectGetMaxX(self.cancelTextButton.frame);
         CGFloat width = 0.0f;
@@ -218,6 +246,10 @@
         NSMutableArray *buttonsInOrderHorizontally = [NSMutableArray new];
         if (!self.rotateCounterclockwiseButtonHidden) {
             [buttonsInOrderHorizontally addObject:self.rotateCounterclockwiseButton];
+        }
+        
+        if (!self.swapButtonHidden) {
+            [buttonsInOrderHorizontally addObject:self.swapTextButton];
         }
         
         [buttonsInOrderHorizontally addObject:self.resetButton];
@@ -303,6 +335,10 @@
         if (self.doneButtonTapped)
             self.doneButtonTapped();
     }
+    else if (button == self.swapTextButton) {
+        if (self.swapButtonTapped)
+            self.swapButtonTapped();
+    }
     else if (button == self.resetButton && self.resetButtonTapped) {
         self.resetButtonTapped();
     }
@@ -328,6 +364,15 @@
         return;
     
     _clampButtonHidden = clampButtonHidden;
+    [self setNeedsLayout];
+}
+
+- (void)setSwapButtonHidden:(BOOL)swapButtonHidden {
+    if (_swapButtonHidden == swapButtonHidden) {
+        return;
+    }
+    
+    _swapButtonHidden = swapButtonHidden;
     [self setNeedsLayout];
 }
 

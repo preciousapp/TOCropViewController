@@ -78,6 +78,8 @@
     UIImageView *imageView = nil;
     if ((self.isDismissing && !CGRectIsEmpty(self.toFrame)) || (!self.isDismissing && !CGRectIsEmpty(self.fromFrame))) {
         imageView = [[UIImageView alloc] initWithImage:self.image];
+        imageView.contentMode = UIViewContentModeScaleAspectFill;
+        imageView.clipsToBounds = YES;
         imageView.frame = self.fromFrame;
         [containerView addSubview:imageView];
         

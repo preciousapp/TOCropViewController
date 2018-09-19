@@ -27,6 +27,7 @@
 #import "TOCropScrollView.h"
 
 #define TOCROPVIEW_BACKGROUND_COLOR [UIColor colorWithWhite:0.12f alpha:1.0f]
+#define TOCROPVIEW_BACKGROUND_LIGHT_COLOR [UIColor colorWithWhite:0.95f alpha:1.0f]
 
 static const CGFloat kTOCropViewPadding = 14.0f;
 static const NSTimeInterval kTOCropTimerDuration = 0.8f;
@@ -143,6 +144,7 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
     self.cropBoxFrame = CGRectZero;
     self.applyInitialCroppedImageFrame = NO;
     self.editing = NO;
+    self.cropBackgroundLight = NO;
     self.cropBoxResizeEnabled = !circularMode;
     self.aspectRatio = circularMode ? (CGSize){1.0f, 1.0f} : CGSizeZero;
     self.resetAspectRatioEnabled = !circularMode;
@@ -965,6 +967,24 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
 }
 
 #pragma mark - Accessors -
+
+- (void)setCropBackgroundLight:(BOOL)cropBackgroundLight {
+    _cropBackgroundLight = cropBackgroundLight;
+    
+    UIColor *backgroundColor = TOCROPVIEW_BACKGROUND_COLOR;
+    UIBlurEffectStyle style = UIBlurEffectStyleDark;
+    if (cropBackgroundLight) {
+        backgroundColor = TOCROPVIEW_BACKGROUND_LIGHT_COLOR;
+        style = UIBlurEffectStyleLight;
+    }
+    
+    self.backgroundColor = backgroundColor;
+    self.translucencyEffect = [UIBlurEffect effectWithStyle:style];
+    if ([self.translucencyView isKindOfClass:[UIVisualEffectView class]]) {
+        UIVisualEffectView *visualEffectView = (UIVisualEffectView *)self.translucencyView;
+        visualEffectView.effect = self.translucencyEffect;
+    }
+}
 
 - (void)setCropBoxResizeEnabled:(BOOL)panResizeEnabled {
     _cropBoxResizeEnabled = panResizeEnabled;

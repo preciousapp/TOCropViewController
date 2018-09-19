@@ -74,6 +74,12 @@
  */
 - (void)cropViewController:(nonnull TOCropViewController *)cropViewController didFinishCancelled:(BOOL)cancelled NS_SWIFT_NAME(cropViewController(_:didFinishCancelled:));
 
+/**
+ - Custom delegate! Called when swap button is pressed.
+ -
+ - */
+- (void)cropViewControllerSwapButtonPressed:(nonnull TOCropViewController *)cropViewController;
+
 @end
 
 @interface TOCropViewController : UIViewController
@@ -221,6 +227,13 @@
  Default is NO.
  */
 @property (nonatomic, assign) BOOL aspectRatioPickerButtonHidden;
+
+/**
+ - When enabled, hides the 'Swap' button on the toolbar.
+ -
+ - Default is NO.
+ - */
+@property (nonatomic, assign) BOOL swapButtonHidden;
 
 /** 
  If `showActivitySheetOnDone` is true, then these activity items will 

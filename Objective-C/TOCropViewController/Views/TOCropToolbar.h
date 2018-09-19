@@ -46,6 +46,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonnull, nonatomic, strong, readonly) UIButton *cancelIconButton;
 @property (nonnull, nonatomic, copy) NSString *cancelTextButtonTitle;
 
+/* Custom buttons */
+@property (nonnull, nonatomic, strong, readonly) UIButton *swapTextButton;
+
 /* The cropper control buttons */
 @property (nonnull, nonatomic, strong, readonly)  UIButton *rotateCounterclockwiseButton;
 @property (nonnull, nonatomic, strong, readonly)  UIButton *resetButton;
@@ -61,6 +64,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, copy) void (^rotateClockwiseButtonTapped)(void);
 @property (nullable, nonatomic, copy) void (^clampButtonTapped)(void);
 @property (nullable, nonatomic, copy) void (^resetButtonTapped)(void);
+@property (nullable, nonatomic, copy) void (^swapButtonTapped)(void);
 
 /* State management for the 'clamp' button */
 @property (nonatomic, assign) BOOL clampButtonGlowing;
@@ -70,6 +74,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL clampButtonHidden;
 @property (nonatomic, assign) BOOL rotateCounterclockwiseButtonHidden;
 @property (nonatomic, assign) BOOL rotateClockwiseButtonHidden;
+@property (nonatomic, assign) BOOL swapButtonHidden;
 
 /* Enable the reset button */
 @property (nonatomic, assign) BOOL resetButtonEnabled;
