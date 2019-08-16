@@ -659,4 +659,13 @@
     [self setNeedsLayout];
 }
 
+- (UIView *)visibleCancelButton
+{
+    if (self.cancelIconButton.hidden == NO) {
+        return self.cancelIconButton;
+    }
+
+    return self.cancelTextButton;
+}
+
 @end
