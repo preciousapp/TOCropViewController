@@ -256,11 +256,24 @@
 @property (nonatomic, assign) BOOL aspectRatioPickerButtonHidden;
 
 /**
- - When enabled, hides the 'Swap' button on the toolbar.
- -
- - Default is NO.
- - */
+ When enabled, hides the 'Swap' button on the toolbar.
+ 
+ Default is NO.
+ */
 @property (nonatomic, assign) BOOL swapButtonHidden;
+/**
+ When enabled, hides the 'Done' button on the toolbar.
+
+ Default is NO.
+ */
+@property (nonatomic, assign) BOOL doneButtonHidden;
+
+/**
+ When enabled, hides the 'Cancel' button on the toolbar.
+
+ Default is NO.
+ */
+@property (nonatomic, assign) BOOL cancelButtonHidden;
 
 /** 
  If `showActivitySheetOnDone` is true, then these activity items will 

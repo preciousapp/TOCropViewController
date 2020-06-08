@@ -160,11 +160,11 @@
     BOOL verticalLayout = (CGRectGetWidth(self.bounds) < CGRectGetHeight(self.bounds));
     CGSize boundsSize = self.bounds.size;
     
-    self.cancelIconButton.hidden = (!verticalLayout);
-    self.cancelTextButton.hidden = (verticalLayout);
-    self.doneIconButton.hidden   = (!verticalLayout);
-    self.doneTextButton.hidden   = (verticalLayout);
-    self.swapTextButton.hidden   = (verticalLayout || self.swapButtonHidden);
+    self.cancelIconButton.hidden = self.cancelButtonHidden || (!verticalLayout);
+    self.cancelTextButton.hidden = self.cancelButtonHidden || (verticalLayout);
+    self.doneIconButton.hidden   = self.doneButtonHidden || (!verticalLayout);
+    self.doneTextButton.hidden   = self.doneButtonHidden || (verticalLayout);
+    self.swapTextButton.hidden   = self.swapButtonHidden || (verticalLayout);
 
     CGRect frame = self.bounds;
     frame.origin.x -= self.backgroundViewOutsets.left;
@@ -412,6 +412,22 @@
 - (void)setResetButtonEnabled:(BOOL)resetButtonEnabled
 {
     self.resetButton.enabled = resetButtonEnabled;
+}
+
+- (void)setDoneButtonHidden:(BOOL)doneButtonHidden {
+    if (_doneButtonHidden == doneButtonHidden)
+        return;
+    
+    _doneButtonHidden = doneButtonHidden;
+    [self setNeedsLayout];
+}
+
+- (void)setCancelButtonHidden:(BOOL)cancelButtonHidden {
+    if (_cancelButtonHidden == cancelButtonHidden)
+        return;
+    
+    _cancelButtonHidden = cancelButtonHidden;
+    [self setNeedsLayout];
 }
 
 - (CGRect)doneButtonFrame

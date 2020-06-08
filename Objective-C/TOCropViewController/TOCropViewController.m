@@ -1151,6 +1151,25 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
 {
     return self.toolbar.swapButtonHidden;
 }
+- (void)setDoneButtonHidden:(BOOL)doneButtonHidden
+{
+    self.toolbar.doneButtonHidden = doneButtonHidden;
+}
+
+- (BOOL)doneButtonHidden
+{
+    return self.toolbar.doneButtonHidden;
+}
+
+- (void)setCancelButtonHidden:(BOOL)cancelButtonHidden
+{
+    self.toolbar.cancelButtonHidden = cancelButtonHidden;
+}
+
+- (BOOL)cancelButtonHidden
+{
+    return self.toolbar.cancelButtonHidden;
+}
 
 - (void)setResetAspectRatioEnabled:(BOOL)resetAspectRatioEnabled
 {
