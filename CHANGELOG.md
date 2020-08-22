@@ -1,6 +1,25 @@
 x.y.z Release Notes (yyyy-MM-dd)
 =============================================================
 
+2.5.4 Release Notes (2020-07-20)
+=============================================================
+
+## Fixed
+
+* Various fixes and improvements to SPM support. ([#417](https://github.com/TimOliver/TOCropViewController/pull/417) [#422](https://github.com/TimOliver/TOCropViewController/pull/422))
+
+2.5.3 Release Notes (2020-06-11)
+=============================================================
+
+## Added
+
+* SPM Support. ([#413](https://github.com/TimOliver/TOCropViewController/pull/413))
+* The ability to explicitly show and hide the 'Cancel' and 'Done' buttons in the toolbar. ([#392](https://github.com/TimOliver/TOCropViewController/pull/392))
+
+## Fixed
+
+* A memory crash caused by improper `self` usage in delegates between multiple instances of the Swift crop view controller. ([#409](https://github.com/TimOliver/TOCropViewController/pull/409))
+
 2.5.2 Release Notes (2019-10-23)
 =============================================================
 
